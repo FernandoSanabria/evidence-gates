@@ -1,0 +1,13 @@
+{
+  "name": "evidence-gates",
+  "version": "0.1.0",
+  "description": "Pre-registration before any scored run, append-only outcomes, one-shot revisions, gate packets with pasted evidence, and a doc-citation guard for coding agents.",
+  "author": {
+    "name": "Fernando Sanabria",
+    "url": "https://github.com/FernandoSanabria"
+  },
+  "homepage": "https://github.com/FernandoSanabria/evidence-gates",
+  "repository": "https://github.com/FernandoSanabria/evidence-gates",
+  "license": "MIT",
+  "keywords": ["pre-registration", "evidence", "falsifiable", "gates", "doc-guard"]
+}
