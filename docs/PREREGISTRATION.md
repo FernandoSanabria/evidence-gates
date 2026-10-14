@@ -50,7 +50,7 @@ No other step is needed: no second command, no file edited, no confirmation prom
 
 **Falsified by:** any of (i) to (iv) not happening; any verdict in the outcome without pasted output.
 
-**N:** 1 run of the scenario (6 messages in the plugin arm).
+**N:** 1 run of the scenario (7 messages in the plugin arm).
 
 **Forecast:** HOLDS, 4 of 4.
 
@@ -93,7 +93,7 @@ No other step is needed: no second command, no file edited, no confirmation prom
 - **Hours:** Stage 0 about 1 h. Stage 1 at most two build-days, which is the HARD STOP above.
 
 ## Appendix A — the scenario
-Both arms get the same goal text in the same order through `claude -p`, chained with `--continue` into one session. The plugin arm is driven through the plugin's documented interface, so it gets two extra messages that the control cannot use: its T1 begins with `/evidence-gates:prereg `, and a T1b `/evidence-gates:outcome` follows T1. `/evidence-gates:outcome` is user-triggered by design (`disable-model-invocation: true`), so without T1b the plugin's outcome step could not happen in a scripted run. After T5 the plugin arm also gets `/evidence-gates:gate`, as a supplementary check that is **not registered**. Nothing else differs.
+Both arms get the same goal text in the same order through `claude -p`, chained with `--continue` into one session. The plugin arm is driven through the plugin's documented interface, so it gets one extra message that the control cannot use, a T1b `/evidence-gates:outcome` after T1, and its T1 begins with the prefix `/evidence-gates:prereg `. `/evidence-gates:outcome` is user-triggered by design (`disable-model-invocation: true`), so without T1b the plugin's outcome step could not happen in a scripted run. After T5 the plugin arm also gets `/evidence-gates:gate`, as a supplementary check that is **not registered**. Nothing else differs.
 
 **The throwaway repository** is built by `tests/p2p3/make_repo.sh`, committed before P3 runs: one commit on `main` holding `calc.py` with the single line `print(sum(i * i for i in range(1, 5)) + 11)`, which prints 41; a one-line `README.md`; and `docs/.gitkeep`. There is no `CLAUDE.md` and no `.claude/`. The prediction under test is wrong on purpose: "`python3 calc.py` prints 42".
 
