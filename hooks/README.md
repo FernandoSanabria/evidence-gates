@@ -1,1 +1,1 @@
-`hooks.json` and its guard script go here at Stage 1: one `PreToolUse` hook on `Bash` that runs the doc-citation guard before a `git commit`. Empty until then.
+`hooks.json` registers one `PreToolUse` hook on `Bash` (`if: Bash(git *)`, `onFailure: block`) that runs `pre-commit-guard.sh` before every `git commit` Claude makes: the doc-citation guard and the pre-registration append-only check, failing closed.
