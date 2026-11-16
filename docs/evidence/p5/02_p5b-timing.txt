@@ -1,0 +1,141 @@
+P5(b): timing on the untouched P4(a) clone
+$ date -u +%FT%TZ
+2026-11-16T18:27:43Z
+$ pwd; git rev-parse HEAD; git status --short (empty = clean)
+/Users/akasha/.evidence-gates/runs/p4/rag-pipeline
+840a7816dc8b9144a664a83ab740c6c3fcc061e5
+(end)
+$ git ls-files '*.md' | LC_ALL=C sort | head -30
+ARCHITECTURE.md
+CLAUDE.md
+README.md
+blog/CONVENTIONS.md
+blog/article-b-shipping-the-fix.md
+blog/article-c-how-not-to-fool-yourself.md
+blog/evaluation-first-rag.md
+blog/falsification-and-diagnosis.md
+blog/the-cost-of-rigor.md
+eval/COST_LEDGER.md
+eval/KNOWN_LIMITATIONS.md
+eval/METRICS_HISTORY.md
+eval/decomp_probe_RESULT.md
+eval/g10b_PREDICTION.md
+eval/g10b_design.md
+eval/g11_PREDICTION.md
+eval/g11_design.md
+eval/g12_PREDICTION.md
+eval/g12_design.md
+eval/g1_closure_PREDICTION.md
+eval/g1_closure_probe.md
+eval/g5_PREDICTION.md
+eval/g5_design.md
+eval/g6_PREDICTION.md
+eval/g6_design.md
+eval/g8_PREDICTION.md
+eval/g8_design.md
+eval/g9_PREDICTION.md
+eval/g9_design.md
+eval/rechunk_2bc_design.md
+count: 30; paths with a pathspec glob character (*?[): 0
+== 30 docs: $ /usr/bin/time -p python3 -I <new guard> --glob <p1> ... --glob <p30>   (5 runs)
+-- run 1
+OK: all 92 cited commit hashes across 30 tracked docs resolve.
+OK: all 308 relative markdown links across 30 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.18
+user 0.08
+sys 0.05
+exit=0
+-- run 2
+OK: all 92 cited commit hashes across 30 tracked docs resolve.
+OK: all 308 relative markdown links across 30 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.14
+user 0.08
+sys 0.04
+exit=0
+-- run 3
+OK: all 92 cited commit hashes across 30 tracked docs resolve.
+OK: all 308 relative markdown links across 30 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.13
+user 0.08
+sys 0.04
+exit=0
+-- run 4
+OK: all 92 cited commit hashes across 30 tracked docs resolve.
+OK: all 308 relative markdown links across 30 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.13
+user 0.08
+sys 0.04
+exit=0
+-- run 5
+OK: all 92 cited commit hashes across 30 tracked docs resolve.
+OK: all 308 relative markdown links across 30 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.14
+user 0.08
+sys 0.04
+exit=0
+== 40 docs (supplementary): $ /usr/bin/time -p python3 -I <new guard>   (5 runs, no options)
+-- run 1
+OK: all 100 cited commit hashes across 40 tracked docs resolve.
+OK: all 319 relative markdown links across 40 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.14
+user 0.08
+sys 0.04
+exit=0
+-- run 2
+OK: all 100 cited commit hashes across 40 tracked docs resolve.
+OK: all 319 relative markdown links across 40 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.13
+user 0.08
+sys 0.04
+exit=0
+-- run 3
+OK: all 100 cited commit hashes across 40 tracked docs resolve.
+OK: all 319 relative markdown links across 40 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.16
+user 0.09
+sys 0.04
+exit=0
+-- run 4
+OK: all 100 cited commit hashes across 40 tracked docs resolve.
+OK: all 319 relative markdown links across 40 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.13
+user 0.08
+sys 0.04
+exit=0
+-- run 5
+OK: all 100 cited commit hashes across 40 tracked docs resolve.
+OK: all 319 relative markdown links across 40 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+real 0.13
+user 0.08
+sys 0.04
+exit=0

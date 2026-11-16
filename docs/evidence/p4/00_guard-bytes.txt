@@ -1,0 +1,9 @@
+$ date -u +%FT%TZ
+2026-11-16T18:21:30Z
+$ shasum -a 256 scripts/check_doc_citations.py
+dd20f7c4fab55ef0c2f769881a2e0acaa226f616e20b07632fa5f2f8c5ff154f  scripts/check_doc_citations.py
+$ git show f10bf42:scripts/check_doc_citations.py | shasum -a 256
+dd20f7c4fab55ef0c2f769881a2e0acaa226f616e20b07632fa5f2f8c5ff154f  -
+$ git show f10bf42:scripts/gitcmd.py | shasum -a 256; shasum -a 256 scripts/gitcmd.py   (the module the guard imports)
+76e0441d0ff1556d35a2b95815b45401bc38cbdd98f919eb06d1034ef2181aac  -
+76e0441d0ff1556d35a2b95815b45401bc38cbdd98f919eb06d1034ef2181aac  scripts/gitcmd.py

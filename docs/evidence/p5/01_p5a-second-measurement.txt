@@ -1,0 +1,18 @@
+P5(a), second measurement (after P2), per the definition recorded in docs/evidence/HOURS.md
+$ date -u +%FT%TZ
+2026-11-16T18:27:04Z
+$ tests/p2p3/run_arm.sh cli p1 /Users/akasha/.evidence-gates/runs/p1/profile plugin details evidence-gates   (does it report a path?)
+exit=0
+(no path line in the output; full output identical to the first? no)
+$ find /Users/akasha/.evidence-gates/runs/p1/profile/plugins/cache -path '*/.claude-plugin/plugin.json'
+/Users/akasha/.evidence-gates/runs/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0/.claude-plugin/plugin.json
+$ du -sk /Users/akasha/.evidence-gates/runs/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0
+568	/Users/akasha/.evidence-gates/runs/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0
+$ find /Users/akasha/.evidence-gates/runs/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0 -name __pycache__ -o -name .git | sort
+/Users/akasha/.evidence-gates/runs/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0/scripts/__pycache__
+$ du -sk (each __pycache__)
+4	/Users/akasha/.evidence-gates/runs/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0/scripts/__pycache__
+$ ls /Users/akasha/.evidence-gates/runs/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0/scripts/__pycache__ 2>/dev/null
+gitcmd.cpython-311.pyc
+$ diff <first plugin details output> <second plugin details output>   (the quick check above stripped one line too many)
+diff exit=0

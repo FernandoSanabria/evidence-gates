@@ -1,0 +1,8 @@
+$ tests/p2p3/run_arm.sh cli p1 /Users/akasha/.evidence-gates/runs/p1/profile --version
+2.1.325 (Claude Code)
+exit=0
+$ ls -laR /Users/akasha/.evidence-gates/runs/p1/profile
+total 8
+drwxr-xr-x  3 akasha  staff   96 Nov 16 13:20 .
+drwxr-xr-x  8 akasha  staff  256 Nov 16 13:20 ..
+-rw-r--r--  1 akasha  staff   68 Nov 16 13:20 settings.json

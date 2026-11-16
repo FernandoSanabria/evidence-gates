@@ -1,0 +1,27 @@
+$ date -u +%FT%TZ
+2026-11-16T18:20:54Z
+$ tests/p2p3/run_arm.sh cli p1 /Users/akasha/.evidence-gates/runs/p1/profile plugin details evidence-gates
+evidence-gates 0.1.0
+  Description: Pre-registration before any scored run, append-only outcomes, one-shot revisions, gate packets with pasted evidence, and a doc-citation guard.
+  Source: evidence-gates@evidence-gates
+
+Component inventory
+  Skills (4)  evidence-gates, gate, outcome, prereg
+  Agents (0)
+  Hooks (1)  PreToolUse  (harness-only — no model context cost)
+  MCP servers (0)
+  LSP servers (0)
+
+Projected token cost
+  Always-on:   ~344 tok   added to every session
+
+Per-component (rounded)
+  component       always-on  on-invoke
+  outcome               ~60      ~1.1k
+  gate                  ~60      ~1.1k
+  evidence-gates       ~150      ~1.8k
+  prereg                ~80      ~1.4k
+
+  On-invoke cost is paid each time a skill or agent fires.
+  Token counts are estimates and may differ from actual usage.
+exit=0

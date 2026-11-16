@@ -1,0 +1,16 @@
+UNREGISTERED: the two-command fallback, run once on a second fresh profile
+$ date -u +%FT%TZ
+2026-11-16T18:21:14Z
+$ tests/p2p3/run_arm.sh cli p1-fallback /Users/akasha/.evidence-gates/runs/p1-fallback/profile plugin marketplace add FernandoSanabria/evidence-gates
+Adding marketplace…Cloning via SSH: git@github.com:FernandoSanabria/evidence-gates.git
+Refreshing marketplace cache (timeout: 120s)…
+Cloning repository (timeout: 120s): git@github.com:FernandoSanabria/evidence-gates.git
+Clone complete, validating marketplace…
+Cleaning up old marketplace cache…
+✔ Successfully added marketplace: evidence-gates (declared in user settings)
+exit=0
+$ tests/p2p3/run_arm.sh cli p1-fallback /Users/akasha/.evidence-gates/runs/p1-fallback/profile plugin install evidence-gates@evidence-gates
+Installing plugin "evidence-gates@evidence-gates"...✔ Successfully installed plugin: evidence-gates@evidence-gates (scope: user)
+exit=0
+$ date -u +%FT%TZ
+2026-11-16T18:21:20Z

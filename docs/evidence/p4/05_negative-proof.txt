@@ -1,0 +1,5 @@
+$ date -u +%FT%TZ
+2026-11-16T18:22:23Z
+$ python3 -I scripts/check_doc_citations.py --negative-proof; echo "exit=$?"
+NEGATIVE PROOF: the guard went red on the planted dead hash 6fd3bd1eab37eec816acf8433455ae1f8bee38ed (PROOF.md:1). Exit 1, as required.
+exit=1

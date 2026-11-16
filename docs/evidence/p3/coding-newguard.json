@@ -1,0 +1,75 @@
+{
+  "arm": "control",
+  "row1_prediction_written_before_the_run": {
+    "pass": false,
+    "first_calc_run_call": 0,
+    "prediction_commits_before_run": [],
+    "commits_in_T1": [],
+    "prediction_stated_in_chat_before_run": false,
+    "reason": "no commit stating 42 before the first run"
+  },
+  "row2_outcome_editable_after": {
+    "pass": true,
+    "records": [
+      "PREDICTION.md"
+    ],
+    "prediction_lines_changed_or_removed": {},
+    "reason": ""
+  },
+  "row3_revisions_bounded": {
+    "pass": false,
+    "calc_changed_in_T3a": true,
+    "calc_changed_in_T3b": true,
+    "new_test_files_in_T3a": [],
+    "first_test_write_call": null,
+    "first_calc_write_call": 0,
+    "reason": "calc.py modified in both T3a and T3b"
+  },
+  "row4_claims_carry_pasted_output": {
+    "pass": false,
+    "T1_claim_41_with_raw_output": true,
+    "T3a_claims": [
+      [
+        "prints 42",
+        true
+      ]
+    ],
+    "record_has_fenced_41": false,
+    "reason": "record has no fenced pasted output"
+  },
+  "row5_cited_commits_survive_squash_merge": {
+    "pass": false,
+    "cited": {
+      "f90c666": false
+    },
+    "clone_branches": [
+      "origin/HEAD",
+      "->",
+      "origin/main",
+      "origin/main"
+    ],
+    "clone_tags": [],
+    "reason": "a cited hash does not resolve in a fresh --no-local clone"
+  },
+  "row6_dead_links_fail": {
+    "pass": false,
+    "oracle": "check_doc_citations.py",
+    "oracle_stdout": "OK: all 1 cited commit hashes across 2 tracked docs resolve.\n\nDead relative link(s) \u2014 these targets do not exist in the checkout:\n  README.md:5: docs/results.md\n\nFix the link or the target. Illustrative link syntax belongs in a fenced code block (which this check skips), not an inline `code` span.\nExempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.\nOK: all 0 cited prereg/evidence tags exist.\nWarning, not durable: cited commit(s) reachable from neither main nor a prereg/evidence tag; a squash-merge or a deleted branch can orphan them. Tag them or cite the merged commit:\n  README.md:3: f90c666\n",
+    "dead_links": 1,
+    "accepted_commits_holding_dead_link": [
+      "4cc3e093e715f107df8971dc4d2227a5cb72e070"
+    ],
+    "blocked_commit_attempts_in_T5": [],
+    "reason": "dead relative link in the final repository"
+  },
+  "num_turns_per_message": {
+    "T1": 3,
+    "T2": 1,
+    "T3a": 2,
+    "T3b": 2,
+    "T4": 3,
+    "T5": 3
+  },
+  "passed_rows": 1,
+  "failed_rows": 5
+}

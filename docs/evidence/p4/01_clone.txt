@@ -1,0 +1,20 @@
+$ date -u +%FT%TZ
+2026-11-16T18:21:43Z
+$ git clone https://github.com/FernandoSanabria/rag-pipeline.git /Users/akasha/.evidence-gates/runs/p4/rag-pipeline
+exit=0
+$ git checkout --detach 840a7816dc8b9144a664a83ab740c6c3fcc061e5
+exit=0
+$ git rev-parse HEAD
+840a7816dc8b9144a664a83ab740c6c3fcc061e5
+$ git status --short (empty = clean)
+(end)
+$ git rev-list --count HEAD
+105
+$ git rev-parse --is-shallow-repository
+false
+$ git tag | wc -l
+17
+$ git ls-files '*.md' | wc -l
+40
+$ shasum -a 256 scripts/check_doc_citations.py
+e50b3c4ed1bcc8afeefc6c8eba8d7efc41faa1bcc2704262a5fb0aa076e324fc  scripts/check_doc_citations.py

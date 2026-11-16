@@ -1,0 +1,38 @@
+$ date -u +%FT%TZ
+2026-11-16T18:22:17Z
+$ python3 -m unittest tests.test_check_doc_citations -v
+test_case_word_too_far_is_not_exempt (tests.test_check_doc_citations.Guard.test_case_word_too_far_is_not_exempt) ... ok
+test_dead_hash_red_with_file_line (tests.test_check_doc_citations.Guard.test_dead_hash_red_with_file_line) ... ok
+test_dead_link_red (tests.test_check_doc_citations.Guard.test_dead_link_red) ... ok
+test_durability (tests.test_check_doc_citations.Guard.test_durability) ... ok
+test_exempt_actions_run_id (tests.test_check_doc_citations.Guard.test_exempt_actions_run_id) ... ok
+test_exempt_aws_case_id (tests.test_check_doc_citations.Guard.test_exempt_aws_case_id) ... ok
+test_exempt_other_repo_url (tests.test_check_doc_citations.Guard.test_exempt_other_repo_url) ... ok
+test_exempt_run_id_without_url_is_not_exempt (tests.test_check_doc_citations.Guard.test_exempt_run_id_without_url_is_not_exempt) ... ok
+test_exempt_uuid_any_case (tests.test_check_doc_citations.Guard.test_exempt_uuid_any_case) ... ok
+test_glob (tests.test_check_doc_citations.Guard.test_glob) ... ok
+test_negative_control_all_digit_token_is_a_hash (tests.test_check_doc_citations.Guard.test_negative_control_all_digit_token_is_a_hash) ... ok
+test_negative_control_dead_hash_beside_exempt_form (tests.test_check_doc_citations.Guard.test_negative_control_dead_hash_beside_exempt_form) ... ok
+test_negative_control_own_remote_url_still_checked (tests.test_check_doc_citations.Guard.test_negative_control_own_remote_url_still_checked) ... ok
+test_negative_control_resolving_token_never_exempted (tests.test_check_doc_citations.Guard.test_negative_control_resolving_token_never_exempted) ... ok
+test_negative_control_self_url_flag (tests.test_check_doc_citations.Guard.test_negative_control_self_url_flag) ... ok
+test_negative_proof_exits_one (tests.test_check_doc_citations.Guard.test_negative_proof_exits_one) ... ok
+test_resolving_hash_and_link_green (tests.test_check_doc_citations.Guard.test_resolving_hash_and_link_green) ... ok
+test_tag_citations (tests.test_check_doc_citations.Guard.test_tag_citations) ... ok
+test_tag_shapes_outside_code_spans_are_not_citations (tests.test_check_doc_citations.Guard.test_tag_shapes_outside_code_spans_are_not_citations) ... ok
+test_clean_commit_allows (tests.test_check_doc_citations.HookMode.test_clean_commit_allows) ... ok
+test_commit_with_dead_link_blocks (tests.test_check_doc_citations.HookMode.test_commit_with_dead_link_blocks) ... ok
+test_dash_c_commit (tests.test_check_doc_citations.HookMode.test_dash_c_commit) ... ok
+test_non_commit_allows (tests.test_check_doc_citations.HookMode.test_non_commit_allows) ... ok
+test_unparseable_blocks (tests.test_check_doc_citations.HookMode.test_unparseable_blocks) ... ok
+test_untracked_new_doc_in_add_all_commit_blocks (tests.test_check_doc_citations.HookMode.test_untracked_new_doc_in_add_all_commit_blocks) ... ok
+test_classification (tests.test_check_doc_citations.LinkHelpers.test_classification) ... ok
+test_fenced_links_ignored (tests.test_check_doc_citations.LinkHelpers.test_fenced_links_ignored) ... ok
+test_inline_link_extracted_with_lineno (tests.test_check_doc_citations.LinkHelpers.test_inline_link_extracted_with_lineno) ... ok
+test_resolution (tests.test_check_doc_citations.LinkHelpers.test_resolution) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 5.531s
+
+OK
+exit=0

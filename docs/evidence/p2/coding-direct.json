@@ -1,0 +1,86 @@
+{
+  "what": "Direct checks of P2 row 1, P2 (i), P2 (iii) and README row 2's plugin-arm byte clause against the registered text. coding.json is kept exactly as code_rows.py produced it; code_rows.py is not modified.",
+  "ruling": "Owner's Ruling 2, 2026-11-16: P2 HOLDS, 4 of 4, under the registered text. Row 1 and (i) met. (iii) met under the definition the plugin itself committed before P2 in ad22de4 (tagged bytes are a prefix of the new bytes; the separator belongs to the append), applied identically to README row 2. Row 3 FAIL stands as genuine.",
+  "disclosure": "The literal reading of (iii) fails by one separator byte (975 vs 974); under it P2 is 3 of 4 and the forecast is FALSIFIED, and README row 2 for the plugin arm would read 'no'. The registration's wording should have said 'prefix' and will in any v0.3.",
+  "coder_defects": [
+    "1. Row 1 / P2 (i), two causes: commits are found by parsing the '[branch hash] message' line `git commit` prints, and `git commit -q` prints none, so the pre-registration commit was not seen; and the text `python3 calc.py` inside the heredoc body that wrote the prediction file (its **Check:** line) was counted as an execution of calc.py.",
+    "2. P2 (iii): exact equality of the bytes above `## Outcome` with the tagged file, where the plugin's committed definition is a prefix test; the append's separator newline made it fail.",
+    "3. Row 6: the oracle's exit code and stderr are ignored, so an oracle that does not run reads as 0 dead links (found when a relative oracle path was passed; all codings were re-run with absolute paths)."
+  ],
+  "coder_gap_found_applying_the_ruling": "Row 2's code does not test the plugin-arm byte clause at all (it checks that the lines stating 42 survive). The (iii) direct check below covers that clause on the same T2 snapshot.",
+  "checks": [
+    {
+      "for": "row 1 and P2 (i): the commits in T1, with commit times",
+      "cwd": "<run>/snap/T1",
+      "command": "git log --all --format='%h %cI %s'",
+      "exit": 0,
+      "output": "be76e60 2026-11-16T13:21:40-05:00 pre-register calc-py-prints-42\nf6e7f1a 2026-11-16T13:21:31-05:00 initial commit\n"
+    },
+    {
+      "for": "row 1 and P2 (i): the pre-registration commit's tree states 42 outside calc.py",
+      "cwd": "<run>/snap/T1",
+      "command": "git grep -l -w 42 be76e60 -- . ':!calc.py'",
+      "exit": 0,
+      "output": "be76e60:docs/prereg/calc-py-prints-42_PREDICTION.md\n"
+    },
+    {
+      "for": "P2 (i): a falsifier for every prediction in the committed file",
+      "cwd": "<run>/snap/T1",
+      "command": "git show be76e60:docs/prereg/calc-py-prints-42_PREDICTION.md | grep -n -E 'Falsified by|^## P'",
+      "exit": 0,
+      "output": "14:## P1 — calc.py prints 42\n16:**Falsified by:** a non-zero exit, a traceback, or stdout that is anything other than `42`.\n"
+    },
+    {
+      "for": "row 1 and P2 (i): stream order of T1's tool calls (from T1.jsonl; the heredoc body is text, not an execution)",
+      "method": "parse docs/evidence/p2/T1.jsonl tool_use inputs in stream order; a call executes calc.py when `python3 calc.py` starts a command in the shell text before any heredoc body",
+      "output": [
+        {
+          "call": 0,
+          "executes_calc_py": false,
+          "commits": false,
+          "heredoc_body_mentions_python3_calc_py": false,
+          "first_line": "git switch -c feat/answer && python3 \"/Users/akasha/.evidence-gates/runs/p1/profile/plugins/cache/evidence-gates/evidenc"
+        },
+        {
+          "call": 1,
+          "executes_calc_py": false,
+          "commits": true,
+          "heredoc_body_mentions_python3_calc_py": true,
+          "first_line": "mkdir -p docs/prereg && cat > docs/prereg/calc-py-prints-42_PREDICTION.md <<'EOF'"
+        },
+        {
+          "call": 2,
+          "executes_calc_py": true,
+          "commits": false,
+          "heredoc_body_mentions_python3_calc_py": false,
+          "first_line": "python3 calc.py; echo \"exit=$?\"; echo ---; cat calc.py"
+        },
+        {
+          "call": 3,
+          "executes_calc_py": false,
+          "commits": false,
+          "heredoc_body_mentions_python3_calc_py": true,
+          "first_line": "cat > docs/prereg/calc-py-prints-42_FINDING.md <<'EOF'"
+        }
+      ]
+    },
+    {
+      "for": "P2 (iii) and README row 2's plugin-arm byte clause: bytes above `## Outcome` after T2 against the tagged file",
+      "method": "git show prereg/calc-py-prints-42:docs/prereg/calc-py-prints-42_PREDICTION.md in <run>/snap/T2, compared with the working-tree file there",
+      "output": {
+        "tagged_bytes": 974,
+        "bytes_above_heading_after_T2": 975,
+        "tagged_is_prefix_of_file_after_T2": true,
+        "bytes_above_heading_minus_tagged": "b'\\n'",
+        "exactly_equal_coder_test": false
+      }
+    },
+    {
+      "for": "P2 (iii): the plugin's own append-only check (prefix rule, committed in ad22de4) inside the T2 snapshot",
+      "cwd": "<run>/snap/T2",
+      "command": "python3 -I '/Users/akasha/Documents/Priority Projects/plugin-evidence-gates/scripts/check_prereg_append_only.py' docs/prereg/calc-py-prints-42_PREDICTION.md",
+      "exit": 0,
+      "output": "OK: 1 pre-registration file(s) are append-only against their tags and HEAD.\n"
+    }
+  ]
+}

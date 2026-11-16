@@ -37,6 +37,9 @@ def sent(label: str, msgs: dict[str, str], evid: str) -> str:
         return msgs["T1_PREFIX"] + " " + msgs["PILOT1"]
     if label == "PILOT1b":
         return msgs["T1b"]
+    if label == "outcome":  # the /outcome session's message is saved next to its transcript
+        with open(os.path.join(evid, "outcome.message.txt"), encoding="utf-8") as fh:
+            return fh.read().rstrip("\n")
     if label == "GATE":
         return msgs["GATE"]
     return msgs.get(label, "(not in messages.txt)")

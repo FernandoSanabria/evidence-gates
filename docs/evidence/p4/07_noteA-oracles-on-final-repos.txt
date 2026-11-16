@@ -1,0 +1,32 @@
+Note A: both oracles run directly on a copy of each arm's final snapshot (snap/T5), with exit codes.
+== p3-control, final snapshot: $ python3 -I tests/legacy_check_doc_citations.py
+OK: all 1 cited commit hashes across 2 tracked docs resolve.
+
+Dead relative link(s) — these targets do not exist in the checkout:
+  README.md:5: docs/results.md
+
+Fix the link or the target. Illustrative link syntax belongs in a fenced code block (which this check skips), not an inline `code` span.
+exit=1
+== p3-control, final snapshot: $ python3 -I scripts/check_doc_citations.py
+OK: all 1 cited commit hashes across 2 tracked docs resolve.
+
+Dead relative link(s) — these targets do not exist in the checkout:
+  README.md:5: docs/results.md
+
+Fix the link or the target. Illustrative link syntax belongs in a fenced code block (which this check skips), not an inline `code` span.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 0 cited prereg/evidence tags exist.
+Warning, not durable: cited commit(s) reachable from neither main nor a prereg/evidence tag; a squash-merge or a deleted branch can orphan them. Tag them or cite the merged commit:
+  README.md:3: f90c666
+exit=1
+== p2-plugin, final snapshot: $ python3 -I tests/legacy_check_doc_citations.py
+OK: all 2 cited commit hashes across 3 tracked docs resolve.
+OK: all 0 relative markdown links across 3 tracked docs resolve.
+exit=0
+== p2-plugin, final snapshot: $ python3 -I scripts/check_doc_citations.py
+OK: all 2 cited commit hashes across 3 tracked docs resolve.
+OK: all 0 relative markdown links across 3 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 3 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+exit=0

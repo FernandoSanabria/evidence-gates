@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # Scrub the staged diff before any commit that touches docs/evidence/. Prints every result; exits 1 if any check fails.
-# The owner's rules (2026-11-16): no work-email domain; no e-mail-shaped string outside the exact seven-string
+# The owner's rules (2026-11-16): no work-email domain; no e-mail-shaped string outside the exact eight-string
 # allow-list; no key-shaped string (the literal `sk-ant-` pattern text is only counted); no token values.
+# The eighth string, git@github.com, was added by the owner's ruling of 2026-11-16 (GitHub's SSH service user, not
+# personal data); it appears in the P1 install output.
 set -u
 ALLOW=(evidence-gates@evidence-gates noreply@anthropic.com cc-plugin-agents-md@builtin cc-plugin-plugin-authoring@builtin
-       cc-plugin-privacy@builtin cc-plugin-telemetry@builtin evidence-gates@inline)
+       cc-plugin-privacy@builtin cc-plugin-telemetry@builtin evidence-gates@inline git@github.com)
 diff=$(git diff --cached)
 fail=0
 
@@ -15,7 +17,7 @@ raw=$(printf '%s\n' "$diff" | grep -Eo '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+' | grep
 echo "e-mail-shaped strings, raw (after the noreply filter):"; printf '%s\n' "$raw" | sed '/^$/d; s/^/  /'
 args=(); for a in "${ALLOW[@]}"; do args+=(-e "$a"); done
 filtered=$(printf '%s\n' "$raw" | sed '/^$/d' | grep -v -x -F "${args[@]}")
-echo "e-mail-shaped strings outside the seven-string allow-list (must be empty):"; printf '%s\n' "$filtered" | sed '/^$/d; s/^/  /'
+echo "e-mail-shaped strings outside the eight-string allow-list (must be empty):"; printf '%s\n' "$filtered" | sed '/^$/d; s/^/  /'
 [ -z "$filtered" ] || fail=1
 
 lit=$(printf '%s\n' "$diff" | grep -c 'sk-ant-')

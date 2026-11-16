@@ -1,0 +1,27 @@
+$ date -u +%FT%TZ
+2026-11-16T18:22:04Z
+$ pwd   (a cp -R copy of the P4(a) clone)
+/Users/akasha/.evidence-gates/runs/p4/rag-pipeline-b
+planted hash: 86591a5e7ff57be23abadbc317214c3081c23234; doc: ARCHITECTURE.md (the first *.md, sorted)
+$ git cat-file -e "86591a5e7ff57be23abadbc317214c3081c23234^{commit}"; echo "exit=$?"   (non-zero = does not resolve)
+fatal: Not a valid object name 86591a5e7ff57be23abadbc317214c3081c23234^{commit}
+exit=128
+$ wc -l < ARCHITECTURE.md
+319
+$ printf 'Planted for P4(b): commit %s.
+' 86591a5e7ff57be23abadbc317214c3081c23234 >> ARCHITECTURE.md
+$ wc -l < ARCHITECTURE.md; tail -1 ARCHITECTURE.md
+320
+Planted for P4(b): commit 86591a5e7ff57be23abadbc317214c3081c23234.
+$ git status --short
+ M ARCHITECTURE.md
+$ python3 -I "/Users/akasha/Documents/Priority Projects/plugin-evidence-gates/scripts/check_doc_citations.py"; echo "exit=$?"
+Dead commit-hash citation(s) — these do not resolve to a commit in history:
+  ARCHITECTURE.md:320: 86591a5e7ff57be23abadbc317214c3081c23234
+
+If commit hashes were rewritten, remap the citations old->new.
+OK: all 319 relative markdown links across 40 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+exit=1

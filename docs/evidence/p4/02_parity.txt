@@ -1,0 +1,15 @@
+$ date -u +%FT%TZ
+2026-11-16T18:21:54Z
+$ pwd
+/Users/akasha/.evidence-gates/runs/p4/rag-pipeline
+$ python3 -I scripts/check_doc_citations.py; echo "exit=$?"
+OK: all 100 cited commit hashes across 40 tracked docs resolve.
+OK: all 319 relative markdown links across 40 tracked docs resolve.
+exit=0
+$ python3 -I "/Users/akasha/Documents/Priority Projects/plugin-evidence-gates/scripts/check_doc_citations.py"; echo "exit=$?"
+OK: all 100 cited commit hashes across 40 tracked docs resolve.
+OK: all 319 relative markdown links across 40 tracked docs resolve.
+Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
+OK: all 33 cited prereg/evidence tags exist.
+Durability: every cited commit is reachable from main or a namespaced tag.
+exit=0
