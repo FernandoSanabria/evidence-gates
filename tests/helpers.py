@@ -40,7 +40,8 @@ class Repo:
             fh.write(text)
 
     def read(self, path: str) -> str:
-        return open(os.path.join(self.dir, path), encoding="utf-8").read()
+        with open(os.path.join(self.dir, path), encoding="utf-8") as fh:
+            return fh.read()
 
     def commit(self, message: str = "c") -> str:
         self.git("add", "-A")
