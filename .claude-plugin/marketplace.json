@@ -1,0 +1,15 @@
+{
+  "name": "evidence-gates",
+  "description": "Pre-registration before any scored run, append-only outcomes, one-shot revisions, gate packets with pasted evidence, and a doc-citation guard for Claude Code.",
+  "owner": {
+    "name": "Fernando Sanabria",
+    "url": "https://github.com/FernandoSanabria"
+  },
+  "plugins": [
+    {
+      "name": "evidence-gates",
+      "source": "./",
+      "description": "Pre-registration before any scored run, append-only outcomes, one-shot revisions, gate packets with pasted evidence, and a doc-citation guard."
+    }
+  ]
+}

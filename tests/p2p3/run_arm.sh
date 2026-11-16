@@ -8,6 +8,7 @@
 #   run_arm.sh plugin    <run-id> <evidence-dir> <profile> P2: Appendix A in the P1 profile (plugin installed)
 #   run_arm.sh pilot     <run-id> <evidence-dir> <plugin-dir>  unregistered pilot, at most $1.00 in total
 #   run_arm.sh outcome   <run-id> <evidence-dir> <profile> <cwd> <message>
+#   run_arm.sh cli       <run-id> <profile> <claude args...>  e.g. `plugin install …`; no session, no ledger row
 #
 # Session environment: `env -i` plus exactly HOME (a fresh per-run directory), USER, LOGNAME, TMPDIR, SHELL, PATH,
 # CLAUDE_CONFIG_DIR, DISABLE_AUTOUPDATER=1, GIT_CONFIG_GLOBAL (the run's gitconfig). Nothing else.
@@ -157,8 +158,12 @@ json.dump({"hooks": {"PreToolUse": [{"matcher": "Bash", "hooks": [{"type": "comm
       case $label in
         PILOT1) text="$(msg T1_PREFIX) $(msg PILOT1)" ;; PILOT1b) text="$(msg T1b)" ;; *) text="$(msg "$label")" ;;
       esac
-      left=$(python3 -I -c 'import sys; print("%.2f" % (1.00 - float(sys.argv[1])))' "$spent")
-      python3 -I -c 'import sys; sys.exit(0 if float(sys.argv[1]) >= 0.05 else 1)' "$left" || { echo "run_arm: pilot budget spent"; break; }
+      # The $1.00 is a total: each message may spend what is left, rounded down to the cent; at 0.00 the pilot stops.
+      left=$(python3 -I -c 'import math, sys; print("%.2f" % (math.floor((1.00 - float(sys.argv[1])) * 100 + 1e-9) / 100))' "$spent")
+      if ! python3 -I -c 'import sys; sys.exit(0 if float(sys.argv[1]) > 0 else 1)' "$left"; then
+        echo "pilot stopped before $label: the \$1.00 total is spent (spent $spent)" | tee "$evid/PILOT_STOP.txt"
+        break
+      fi
       cont=(); [ $first -eq 1 ] || cont=(--continue)
       before=$(spend_sum)
       NOTE="UNREGISTERED pilot" run_claude "$label" "$RUN/repo" "$RUN/profile" "$evid/$label.jsonl" -p "$text" \
@@ -166,9 +171,24 @@ json.dump({"hooks": {"PreToolUse": [{"matcher": "Bash", "hooks": [{"type": "comm
       prc=$?
       snapshot "$RUN/repo" "$label"
       spent=$(python3 -I -c 'import sys; print(float(sys.argv[1]) + float(sys.argv[2]) - float(sys.argv[3]))' "$spent" "$(spend_sum)" "$before")
-      [ $prc -eq 0 ] || break
+      if [ $prc -ne 0 ]; then
+        echo "pilot stopped at $label: the session exited non-zero (see the ledger note and the transcript)" | tee "$evid/PILOT_STOP.txt"
+        break
+      fi
       first=0
     done
+    [ -e "$evid/PILOT_STOP.txt" ] || echo "pilot completed all four messages; spent $spent of \$1.00" | tee "$evid/PILOT_STOP.txt"
+    ;;
+  cli)
+    # A `claude plugin …` (or other non-session) command in the clean environment, in a profile that is created fresh
+    # with the one-key settings.json when it does not exist yet. No session, no result event, no ledger row.
+    profile=${3:?profile dir}; shift 3
+    [ -e "$RUN" ] || new_run
+    [ -e "$profile" ] || new_profile "$profile"
+    mkdir -p "$RUN/work"
+    assert_binary
+    senv "$profile"
+    ( cd "$RUN/work" && exec env -i "${SENV[@]}" "$CC" "$@" < /dev/null )
     ;;
   outcome)
     evid=${3:?evidence dir}; profile=${4:?profile}; cwd=${5:?cwd}; text=${6:?message}; mkdir -p "$evid"
