@@ -1,0 +1,24 @@
+# Instrument (2026-11-16)
+
+$ for b in ~/.vscode/extensions/anthropic.claude-code-*/resources/native-binary/claude; do echo "$b $("$b" --version)"; done
+~/.vscode/extensions/anthropic.claude-code-2.1.322-darwin-arm64/resources/native-binary/claude 2.1.322 (Claude Code)
+~/.vscode/extensions/anthropic.claude-code-2.1.323-darwin-arm64/resources/native-binary/claude 2.1.323 (Claude Code)
+~/.vscode/extensions/anthropic.claude-code-2.1.325-darwin-arm64/resources/native-binary/claude 2.1.325 (Claude Code)
+
+$ shasum -a 256 <newest> ~/.evidence-gates/bin/claude-2.1.325
+84590fefe6338be9087f5814b61f9a54c5f21524163a4c127cb5a808e31009f2  ~/.vscode/extensions/anthropic.claude-code-2.1.325-darwin-arm64/resources/native-binary/claude
+84590fefe6338be9087f5814b61f9a54c5f21524163a4c127cb5a808e31009f2  ~/.evidence-gates/bin/claude-2.1.325
+
+$ ~/.evidence-gates/bin/claude-2.1.325 --version
+2.1.325 (Claude Code)
+
+$ ~/.evidence-gates/bin/claude-2.1.325 --help | grep -n <the five arm flags>
+135:  --model <model>                       Model for the current session. Provide
+146:  --output-format <format>              Output format (only works with --print):
+151:  --permission-mode <mode>              Permission mode to use for the session
+153:                                        "bypassPermissions", "manual",
+260:  --verbose                             Override verbose mode setting from
+$ ~/.evidence-gates/bin/claude-2.1.325 --help | grep -c -- --max-turns
+0
+
+The claude on PATH (/opt/homebrew/bin/claude, 2.1.9) is never used.

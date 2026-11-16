@@ -1,0 +1,16 @@
+# Parser test for --max-turns (2026-11-16): zero spend
+
+Both runs: empty CLAUDE_CONFIG_DIR, no key anywhere, ANTHROPIC_BASE_URL=http://127.0.0.1:9, DISABLE_AUTOUPDATER=1.
+Run from this agent's own shell, not through the runner (the runner did not exist yet).
+
+## A: the exact arm flag set
+$ claude-2.1.325 -p "parser test" --model claude-sonnet-5-5 --permission-mode bypassPermissions --max-turns 30 --output-format stream-json --verbose
+exit 1; full stdout in parser_test_A.jsonl (3 events: system/init, assistant, result). Assistant text and error:
+['Not logged in · Please run /login'] error: authentication_failed
+result: total_cost_usd=0 terminal_reason=api_error apiKeySource(init)=none
+
+## B: control, a misspelled flag
+$ claude-2.1.325 -p "parser test" --model claude-sonnet-5-5 --permission-mode bypassPermissions --max-turnz 30 --output-format stream-json --verbose
+error: unknown option '--max-turnz'
+
+Reading: --max-turns is absent from --help but accepted by the parser. A failed at authentication, after option parsing; B failed at option parsing.

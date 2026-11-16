@@ -1,0 +1,23 @@
+# Spend — Stage 1
+
+The hard cap is $10.00, the credit balance of the key the sessions use. `tests/p2p3/run_arm.sh` appends one row per `claude -p` result event through `tests/p2p3/ledger.py`, with the running sum. The cost is the result event's `total_cost_usd`.
+
+Gates:
+- No session starts once the running sum is ≥ $10.00. Every remaining prediction that needs a session is then NOT TESTED, reason "spend cap".
+- If P3 alone costs more than $4.00, stop and report before P1.
+- The pilot runs only if the sum after P3 is ≤ $4.00, and it spends at most $1.00.
+- The supplementary `/evidence-gates:gate` runs only if the sum is under $9.00.
+- A run discarded as an infrastructure failure keeps its row, with a one-line reason.
+
+| # | UTC | run | session | total_cost_usd | running sum | num_turns | note |
+|--:|---|---|---|--:|--:|--:|---|
+| 1 | 2026-11-16T16:51:26Z | parser-test | parser-test-A | 0.000000 | 0.000000 | 1 | no key, API blocked; not via the runner; is_error=true (success) |
+| 2 | 2026-11-16T16:51:37Z | preflight-probe | probe | 0.000000 | 0.000000 | 1 | is_error=true (success); DISCARDED, infrastructure: the apiKeyHelper output was malformed (owner's key file), see discarded/README.md |
+| 3 | 2026-11-16T17:02:33Z | preflight-probe-2 | probe | 0.029753 | 0.029753 | 1 |  |
+| 4 | 2026-11-16T17:02:57Z | preflight-hookproof | hookproof | 0.035646 | 0.065399 | 3 |  |
+| 5 | 2026-11-16T17:08:16Z | p3-control | T1 | 0.024628 | 0.090027 | 3 |  |
+| 6 | 2026-11-16T17:08:22Z | p3-control | T2 | 0.030685 | 0.120712 | 1 |  |
+| 7 | 2026-11-16T17:08:28Z | p3-control | T3a | 0.038697 | 0.159409 | 2 |  |
+| 8 | 2026-11-16T17:08:37Z | p3-control | T3b | 0.049952 | 0.209361 | 2 |  |
+| 9 | 2026-11-16T17:08:51Z | p3-control | T4 | 0.070993 | 0.280354 | 3 |  |
+| 10 | 2026-11-16T17:09:00Z | p3-control | T5 | 0.082934 | 0.363288 | 3 |  |

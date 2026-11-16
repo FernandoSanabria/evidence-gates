@@ -1,0 +1,97 @@
+====================================================================================================
+MESSAGE hookproof (user, as sent):
+(not in messages.txt)
+====================================================================================================
+[init] claude_code_version=2.1.325 model=claude-sonnet-5-5 permissionMode=bypassPermissions apiKeySource=apiKeyHelper plugins=['cc-plugin-agents-md', 'cc-plugin-telemetry', 'cc-plugin-privacy', 'cc-plugin-plugin-authoring']
+
+[tool call Bash] {
+ "command": "echo hello",
+ "description": "Print hello"
+}
+
+[tool result ERROR]
+PreToolUse:Bash hook error: [in=$(cat); { echo "--- hook call"; env | sort; } >> /Users/akasha/.evidence-gates/runs/preflight-hookproof/hookproof.env; echo "fired key_vars=$(env | grep -c -e ANTHROPIC -e sk-ant-) git_config_global=$(env | grep -c GIT_CONFIG_GLOBAL)" >> /Users/akasha/.evidence-gates/runs/preflight-hookproof/hookproof.log; case "$in" in *"echo hello"*) echo 'hookproof: blocked' >&2; exit 2;; esac; exit 0]: hookproof: blocked
+
+
+[assistant]
+The first command, `echo hello`, didn't run. A PreToolUse hook blocked it and returned `hookproof: blocked`. Now I'll run the second command.
+
+[tool call Bash] {
+ "command": "env | grep -c -e ANTHROPIC -e sk-ant- ; env | grep -c GIT_CONFIG_GLOBAL ; env | sort",
+ "description": "Count matching env vars and list environment"
+}
+
+[tool result]
+0
+1
+AI_AGENT=claude-code_2-1-325_agent
+CLAUDECODE=1
+CLAUDE_CODE_CHILD_SESSION=1
+CLAUDE_CODE_ENTRYPOINT=sdk-cli
+CLAUDE_CODE_EXECPATH=/Users/akasha/.evidence-gates/bin/claude-2.1.325
+CLAUDE_CODE_MESSAGING_SOCKET=/tmp/cc-socks/76162.sock
+CLAUDE_CODE_MESSAGING_TOKEN=[REDACTED-TOKEN]
+CLAUDE_CODE_SESSION_ATTENDED=0
+CLAUDE_CODE_SESSION_ID=1295fca3-48bf-4696-a907-60748500f6af
+CLAUDE_CONFIG_DIR=/Users/akasha/.evidence-gates/runs/preflight-hookproof/profile
+CLAUDE_EFFORT=medium
+CLAUDE_PID=76162
+COREPACK_ENABLE_AUTO_PIN=0
+DISABLE_AUTOUPDATER=1
+GIT_CONFIG_GLOBAL=/Users/akasha/.evidence-gates/runs/preflight-hookproof/gitconfig
+GIT_EDITOR=true
+HOME=/Users/akasha/.evidence-gates/runs/preflight-hookproof/home
+LOGNAME=akasha
+NoDefaultCurrentDirectoryInExePath=1
+OLDPWD=/Users/akasha/.evidence-gates/runs/preflight-hookproof/work
+PATH=/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+PWD=/Users/akasha/.evidence-gates/runs/preflight-hookproof/work
+SHELL=/bin/zsh
+SHLVL=1
+TMPDIR=/var/folders/6x/f_ljx_vj5nx_ft0jlvm2xz4m0000gn/T/
+USER=akasha
+_=/usr/bin/env
+
+[assistant]
+**1. `echo hello`:** It didn't run. The PreToolUse hook blocked it and returned `hookproof: blocked`. The hook exits with code 2 whenever the command contains `echo hello`.
+
+**2. The second command:** It ran. Its output is below.
+
+```
+0
+1
+AI_AGENT=claude-code_2-1-325_agent
+CLAUDECODE=1
+CLAUDE_CODE_CHILD_SESSION=1
+CLAUDE_CODE_ENTRYPOINT=sdk-cli
+CLAUDE_CODE_EXECPATH=/Users/akasha/.evidence-gates/bin/claude-2.1.325
+CLAUDE_CODE_MESSAGING_SOCKET=/tmp/cc-socks/76162.sock
+CLAUDE_CODE_MESSAGING_TOKEN=[REDACTED-TOKEN]
+CLAUDE_CODE_SESSION_ATTENDED=0
+CLAUDE_CODE_SESSION_ID=1295fca3-48bf-4696-a907-60748500f6af
+CLAUDE_CONFIG_DIR=/Users/akasha/.evidence-gates/runs/preflight-hookproof/profile
+CLAUDE_EFFORT=medium
+CLAUDE_PID=76162
+COREPACK_ENABLE_AUTO_PIN=0
+DISABLE_AUTOUPDATER=1
+GIT_CONFIG_GLOBAL=/Users/akasha/.evidence-gates/runs/preflight-hookproof/gitconfig
+GIT_EDITOR=true
+HOME=/Users/akasha/.evidence-gates/runs/preflight-hookproof/home
+LOGNAME=akasha
+NoDefaultCurrentDirectoryInExePath=1
+OLDPWD=/Users/akasha/.evidence-gates/runs/preflight-hookproof/work
+PATH=/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+PWD=/Users/akasha/.evidence-gates/runs/preflight-hookproof/work
+SHELL=/bin/zsh
+SHLVL=1
+TMPDIR=/var/folders/6x/f_ljx_vj5nx_ft0jlvm2xz4m0000gn/T/
+USER=akasha
+_=/usr/bin/env
+```
+
+- **API key variables:** The first count is `0`, so no variable matched `ANTHROPIC` or `sk-ant-`.
+- **`GIT_CONFIG_GLOBAL`:** The second count is `1`, so that variable is set.
+- **Token in the output:** `CLAUDE_CODE_MESSAGING_TOKEN` appeared in the dump. It's a session token, so keep that in mind if you share this output.
+
+[result] num_turns=3 total_cost_usd=0.0356457 is_error=False terminal_reason=completed
+
