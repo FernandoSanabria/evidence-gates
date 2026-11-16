@@ -63,11 +63,17 @@ The transcripts and codings:
   - An extracted archive of the release commit measures about 1,144 KB, 840 KB of it `docs/evidence/`.
 - **The installed directory grows after first use.** When the hook's checks first import their helper module, Python writes `scripts/__pycache__/` into it: 4 KB at P5(a).
 - **The hook sees only the commits Claude makes through its Bash tool.** Commits from your terminal, an IDE or CI are not checked. Run `scripts/check_doc_citations.py` there, with full history.
-- **Install transport.** The install cloned over SSH, with the account's own GitHub key. How it behaves on a machine with no GitHub SSH key was not tested.
+- **Install transport.** The registered install (P1) cloned over SSH, with the account's own GitHub key. On a second machine without SSH configured, the same command printed "SSH not configured, cloning via HTTPS" and exited 0. That second run is owner-reported and unregistered ([docs/evidence/p1/08_owner-replication-second-machine.txt](docs/evidence/p1/08_owner-replication-second-machine.txt)).
 
 ## Install
 
 - **Requirements:** listed under the command above.
+- **What it adds,** as `claude plugin details evidence-gates` reports it:
+  - 4 skills;
+  - 1 PreToolUse hook (harness-only — no model context cost);
+  - about 344 always-on tokens per session.
+
+  The token figure is an estimate, as the tool labels it ("Token counts are estimates and may differ from actual usage"). It was measured at P1; a second machine printed about 234 for the same build.
 - **Scope:**
   - `claude plugin install` takes `--scope user|project|local`;
   - the default is `user`.

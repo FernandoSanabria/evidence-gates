@@ -1,0 +1,39 @@
+OWNER-REPORTED, UNREGISTERED: P1(a) replicated by the owner on a second machine (Claude Code 2.1.325, fresh CLAUDE_CONFIG_DIR from mktemp, no session, no login), 2026-11-16. Recorded verbatim as the owner pasted it; not evidence of the registered run.
+----------------------------------------------------------------------------------------------------
+$ export CLAUDE_CONFIG_DIR=$(mktemp -d)
+$ claude plugin install evidence-gates --marketplace FernandoSanabria/evidence-gates; echo "exit=$?"
+
+Adding marketplace…
+SSH not configured, cloning via HTTPS: https://github.com/FernandoSanabria/evidence-gates.git
+Refreshing marketplace cache (timeout: 120s)…
+Cloning repository (timeout: 120s): https://github.com/FernandoSanabria/evidence-gates.git
+Clone complete, validating marketplace…
+✔ Successfully added marketplace: evidence-gates (declared in user settings)
+✔ Successfully installed plugin: evidence-gates@evidence-gates (scope: user)
+exit=0
+
+$ claude plugin details evidence-gates
+evidence-gates 0.1.0
+  Description: Pre-registration before any scored run, append-only outcomes, one-shot revisions, gate packets with
+pasted evidence, and a doc-citation guard.
+  Source: evidence-gates@evidence-gates
+
+Component inventory
+  Skills (4)  evidence-gates, gate, outcome, prereg
+  Agents (0)
+  Hooks (1)  PreToolUse  (harness-only — no model context cost)
+  MCP servers (0)
+  LSP servers (0)
+
+Projected token cost
+  Always-on:   ~234 tok   added to every session
+
+Per-component (rounded)
+  component       always-on  on-invoke
+  outcome               ~40       ~750
+  gate                  ~40       ~710
+  evidence-gates       ~100      ~1.2k
+  prereg                ~50       ~930
+
+  On-invoke cost is paid each time a skill or agent fires.
+  Token counts are estimates and may differ from actual usage.

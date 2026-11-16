@@ -236,4 +236,77 @@ b637351 evidence: P5(a) measurement defined before any install (owner's definiti
 - **A v0.3 pre-registration**, with the "prefix" wording for (iii) and row 2.
 - **The coder.** What, if anything, to do about its defects.
 
+## Amendment 1 (2026-11-16): the owner's second-machine replication of P1(a)
+
+This section is added after the packet's commit (`0549d72`). Nothing above it is changed. The Outcome section of the pre-registration is not touched.
+
+### What ran: owner-reported, unregistered
+
+The owner replicated P1(a) on a second machine: Claude Code 2.1.325, a fresh `CLAUDE_CONFIG_DIR` from `mktemp`, no session, no login. The record is verbatim as the owner pasted it, in [p1/08_owner-replication-second-machine.txt](p1/08_owner-replication-second-machine.txt). It is owner-reported and unregistered: it is not evidence of the registered run. The registered command ran byte for byte. Its transport line and result:
+
+```console
+SSH not configured, cloning via HTTPS: https://github.com/FernandoSanabria/evidence-gates.git
+…
+✔ Successfully installed plugin: evidence-gates@evidence-gates (scope: user)
+exit=0
+```
+
+This covers the P1 section's line "An install on a machine with no GitHub SSH key was not tested". On a machine without SSH configured, the one-command install cloned over HTTPS and exited 0. That result is owner-reported and unregistered.
+
+### Next to P1(a): the transport difference, and the harness
+
+- **This machine (the registered P1)** printed "Cloning via SSH: git@github.com:FernandoSanabria/evidence-gates.git". **The second machine** printed "SSH not configured, cloning via HTTPS: https://github.com/FernandoSanabria/evidence-gates.git".
+- **The result.** The registered install succeeded on a fresh profile either way.
+- **The cause.** The transport difference is the two machines' SSH setup, not the plugin and not the harness.
+- **cli mode's actual HOME and environment** for P1, from [p1/07_ssh-resolution.txt](p1/07_ssh-resolution.txt):
+
+```console
+$ tests/p2p3/run_arm.sh envlist p1
+CLAUDE_CONFIG_DIR=/Users/akasha/.evidence-gates/runs/p1/profile
+DISABLE_AUTOUPDATER=1
+GIT_CONFIG_GLOBAL=/Users/akasha/.evidence-gates/runs/p1/gitconfig
+HOME=/Users/akasha/.evidence-gates/runs/p1/home
+LOGNAME=akasha
+PATH=/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+SHELL=/bin/zsh
+TMPDIR=/var/folders/6x/f_ljx_vj5nx_ft0jlvm2xz4m0000gn/T/
+USER=akasha
+```
+
+- **The two modes are identical.** cli mode and session mode call the runner's same `senv()`: the same nine variables, with HOME and GIT_CONFIG_GLOBAL per run and CLAUDE_CONFIG_DIR the profile. Only the working directory differs.
+- **Neither mode isolates SSH.** OpenSSH resolves `~` from the account's passwd entry (`/Users/akasha`) and ignores `$HOME`. Under exactly this environment, `ssh -v -T git@github.com` read `/Users/akasha/.ssh/config` and authenticated with `/Users/akasha/.ssh/id_ed25519` (07_ssh-resolution.txt).
+- **Withdrawn.** The owner's earlier sentence, that cli mode "does not isolate HOME/environment the way session mode does", is recorded as withdrawn. It was an inference, and the record contradicts it.
+
+**Harness limitation, the owner's text verbatim:** "Harness limitation, found by this replication: the arms are not SSH-isolated. A subject's git could have authenticated with the account's key in any session, because OpenSSH ignores $HOME. No throwaway repository had a remote, and no transcript shows a network git operation; the exposure was never exercised. Planned for the 0.2 harness: GIT_SSH_COMMAND='ssh -F /dev/null -o IdentitiesOnly=yes' in the session environment, or an explicit statement that arms are not SSH-isolated."
+
+The checks behind "never exercised" were run before this text was committed ([p1/08b_ssh-exposure-check.txt](p1/08b_ssh-exposure-check.txt)):
+- **No remotes.** In every throwaway repository the subjects worked in, the live repository and every snapshot of P3, P2 and the pilot, and in the outcome clone, `git remote -v` prints nothing.
+- **No network operations.** All 43 tool calls in the session transcripts were searched for network git (`push`, `fetch`, `pull`, `clone`, `ls-remote`, `remote add`, `submodule`), `ssh`, `curl` and `wget`. The only hit is the text "`~/.ssh`" inside the outcome prose the subject appended, not a command.
+- **The unintended sessions.** The four UNINTENDED sessions made 6 tool calls, none of them network git or ssh, and none ran: every one was denied.
+
+### Token estimates: a finding
+
+The measured figure is this machine's registered P1 output, [p1/04_details.txt](p1/04_details.txt). The README quotes ~344, as an estimate. The second machine's `plugin details`, for the same plugin at the same commit and version, printed lower estimates:
+
+| `plugin details`, Projected token cost | this machine (registered P1) | second machine (owner-reported) |
+|---|--:|--:|
+| Always-on, per session | ~344 | ~234 |
+| outcome, always-on / on-invoke | ~60 / ~1.1k | ~40 / ~750 |
+| gate | ~60 / ~1.1k | ~40 / ~710 |
+| evidence-gates | ~150 / ~1.8k | ~100 / ~1.2k |
+| prereg | ~80 / ~1.4k | ~50 / ~930 |
+
+**Finding:** the tool's token estimate varies between machines for the same plugin, commit and version. It labels these figures itself: "Token counts are estimates and may differ from actual usage." The component inventory matches exactly: 4 skills, 0 agents, 1 PreToolUse hook (harness-only, no model context cost), 0 MCP servers, 0 LSP servers.
+
+### The P1 wording, clarified
+
+The README at `f10bf42` held the install command, byte for byte, in its opening code block. Only its Install section was written afterwards, from the pre-registration's command. P1 ran the command as quoted in the pre-registration, and that string is the same as the README's opening block. `tests/test_readme.py` asserts this.
+
+### What else changed with this amendment
+
+- **`README.md`.** The Install section gains the `plugin details` figures as the tool labels them, quoting ~344, with the second machine's ~234 noted. The "Install transport" limitation now cites the owner-reported HTTPS replication.
+- **`docs/evidence/p1/README.md`.** Its "not tested" sentence now points to the replication.
+- **No session ran,** and no plugin, harness or Outcome file changed. Spend is unchanged at $1.963170.
+- **Hours:** session 6 ran from 21:12:37Z to 2026-11-16T21:51:12Z (0.64 h). It is logged in [HOURS.md](HOURS.md) and includes the wait for the owner's answers, which can't be separated out. The total is 2.93 h of 16.
+
 STOP

@@ -11,8 +11,9 @@ Time spent waiting for the owner (plan approval, the one push) is not logged. Se
 | 3 | 2026-11-16T17:18:19Z | 2026-11-16T17:46:13Z | 0.47 | Rulings read; evidence redaction and commit; build (step 8); pilot; pilot and dogfood fixes; pre-push gate. Stopped to ask for the push. |
 | 4 | 2026-11-16T18:04:49Z | 2026-11-16T18:29:58Z | 0.42 | Push confirmed (`f10bf42` on origin/main); P5(a) measurement defined before any install; P1, P2, P4 with Note A, P5. Stopped before the outcome for the owner's ruling on three coder defects found on P2 data. |
 | 5 | 2026-11-16T20:41:34Z | 2026-11-16T20:58:09Z | 0.28 | Owner's Rulings 1 and 2 read (allow-list, SSH resolution, P2 coding); evidence commit; outcome via /outcome; README; CHANGELOG; GATE packet. Stopped at the packet. |
+| 6 | 2026-11-16T21:12:37Z | 2026-11-16T21:51:12Z | 0.64 | Packet amendment 1: the owner's second-machine replication of P1(a), recorded as owner-reported; the SSH-exposure check; the README's install figures. Includes the wait for the owner's answers, which can't be separated out. Stopped at the amendment. |
 
-Running total: 2.29 h of 16.
+Running total: 2.93 h of 16.
 
 ## P5(a) measurement, defined before any install (recorded 2026-11-16T18:19:46Z)
 

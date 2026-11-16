@@ -1,0 +1,65 @@
+Checks behind the owner's addition to Amendment 1 ("the exposure was never exercised"), 2026-11-16.
+$ date -u +%FT%TZ
+2026-11-16T21:49:21Z
+
+== 1. Remotes in every throwaway repository the subjects worked in (live repo and every snapshot), and in the outcome clone
+p3-control/repo: remotes=[none]
+p3-control/snap/T0: remotes=[none]
+p3-control/snap/T1: remotes=[none]
+p3-control/snap/T2: remotes=[none]
+p3-control/snap/T3a: remotes=[none]
+p3-control/snap/T3b: remotes=[none]
+p3-control/snap/T4: remotes=[none]
+p3-control/snap/T5: remotes=[none]
+p2-plugin/repo: remotes=[none]
+p2-plugin/snap/GATE: remotes=[none]
+p2-plugin/snap/T0: remotes=[none]
+p2-plugin/snap/T1: remotes=[none]
+p2-plugin/snap/T1b: remotes=[none]
+p2-plugin/snap/T2: remotes=[none]
+p2-plugin/snap/T3a: remotes=[none]
+p2-plugin/snap/T3b: remotes=[none]
+p2-plugin/snap/T4: remotes=[none]
+p2-plugin/snap/T5: remotes=[none]
+pilot-1/repo: remotes=[none]
+pilot-1/snap/P0: remotes=[none]
+pilot-1/snap/PILOT1: remotes=[none]
+pilot-1/snap/PILOT1b: remotes=[none]
+pilot-1/snap/PILOT2: remotes=[none]
+pilot-1/snap/PILOT3: remotes=[none]
+outcome/repo: remotes=[none]
+
+== 2. Every tool call in every session transcript, searched for network git or ssh
+docs/evidence/preflight/hookproof.jsonl: 2 tool calls
+docs/evidence/p3/T1.jsonl: 2 tool calls
+docs/evidence/p3/T2.jsonl: 0 tool calls
+docs/evidence/p3/T3a.jsonl: 1 tool calls
+docs/evidence/p3/T3b.jsonl: 1 tool calls
+docs/evidence/p3/T4.jsonl: 2 tool calls
+docs/evidence/p3/T5.jsonl: 2 tool calls
+docs/evidence/pilot/PILOT1.jsonl: 7 tool calls
+docs/evidence/pilot/PILOT1b.jsonl: 2 tool calls
+docs/evidence/pilot/PILOT2.jsonl: 0 tool calls
+docs/evidence/pilot/PILOT3.jsonl: 1 tool calls
+docs/evidence/p2/GATE.jsonl: 1 tool calls
+docs/evidence/p2/T1.jsonl: 4 tool calls
+docs/evidence/p2/T1b.jsonl: 2 tool calls
+docs/evidence/p2/T2.jsonl: 0 tool calls
+docs/evidence/p2/T3a.jsonl: 4 tool calls
+docs/evidence/p2/T3b.jsonl: 2 tool calls
+docs/evidence/p2/T4.jsonl: 4 tool calls
+docs/evidence/p2/T5.jsonl: 1 tool calls
+HIT docs/evidence/outcome/outcome.jsonl: count's own key: the clean environment does not isolate `~/.ssh`;\n  - the unregistered pilot found that the hook blocked `
+docs/evidence/outcome/outcome.jsonl: 5 tool calls
+tool calls searched: 43; network git or ssh hits: 1
+
+Note on the one hit: it is inside the heredoc the /outcome subject appended to docs/PREREGISTRATION.md (the prose
+"the clean environment does not isolate `~/.ssh`"); the pattern \bssh\b matches the text ".ssh". It is not a command.
+$ grep -c 'isolate `~/.ssh`' docs/PREREGISTRATION.md
+1
+
+== 3. The four UNINTENDED cli-mode sessions (ledger rows 24-27): counts only, nothing copied from the profile
+sessions: 4; tool calls: 6; matching network git or ssh: 0; tool results without an error: 0
+
+Reading: no throwaway repository or clone had a remote, and no tool call in any session ran a network git
+operation or ssh. The SSH exposure (the arms are not SSH-isolated) was never exercised.
