@@ -10,9 +10,9 @@ Time spent waiting for the owner (plan approval, the one push) is not logged. Se
 | 2 | 2026-11-16T17:02:20Z | 2026-11-16T17:09:52Z | 0.13 | Steps 4–7: auth probe re-run, hook proof, environment check, coding and rendering tools, harness commit, P3 (control), coding. Stopped at the $4.00 checkpoint to report. |
 | 3 | 2026-11-16T17:18:19Z | 2026-11-16T17:46:13Z | 0.47 | Rulings read; evidence redaction and commit; build (step 8); pilot; pilot and dogfood fixes; pre-push gate. Stopped to ask for the push. |
 | 4 | 2026-11-16T18:04:49Z | 2026-11-16T18:29:58Z | 0.42 | Push confirmed (`f10bf42` on origin/main); P5(a) measurement defined before any install; P1, P2, P4 with Note A, P5. Stopped before the outcome for the owner's ruling on three coder defects found on P2 data. |
-| 5 | 2026-11-16T20:41:34Z | open | | Owner's Rulings 1 and 2 read (allow-list, SSH resolution, P2 coding); evidence commit; outcome via /outcome; README; CHANGELOG; GATE packet. |
+| 5 | 2026-11-16T20:41:34Z | 2026-11-16T20:58:09Z | 0.28 | Owner's Rulings 1 and 2 read (allow-list, SSH resolution, P2 coding); evidence commit; outcome via /outcome; README; CHANGELOG; GATE packet. Stopped at the packet. |
 
-Running total: 2.01 h of 16, with session 5 open.
+Running total: 2.29 h of 16.
 
 ## P5(a) measurement, defined before any install (recorded 2026-11-16T18:19:46Z)
 
