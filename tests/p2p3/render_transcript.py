@@ -33,6 +33,10 @@ def sent(label: str, msgs: dict[str, str], evid: str) -> str:
     plugin = os.path.exists(os.path.join(evid, "T1b.jsonl"))
     if label == "T1" and plugin:
         return msgs["T1_PREFIX"] + " " + msgs["T1"]
+    if label == "PILOT1":  # the unregistered pilot, as run_arm.sh pilot sends it
+        return msgs["T1_PREFIX"] + " " + msgs["PILOT1"]
+    if label == "PILOT1b":
+        return msgs["T1b"]
     if label == "GATE":
         return msgs["GATE"]
     return msgs.get(label, "(not in messages.txt)")

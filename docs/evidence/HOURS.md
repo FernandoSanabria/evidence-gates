@@ -8,9 +8,9 @@ Time spent waiting for the owner (plan approval, the one push) is not logged. Se
 |--:|---|---|--:|---|
 | 1 | 2026-11-16T15:53:21Z | 2026-11-16T16:52:42Z | 0.99 | Stage 1 planning; steps 1–4 (logs, pinned instrument, parser test, runner and harness pieces, auth probe). Stopped at step 4: the probe could not authenticate because the key file's value is malformed (owner's file). |
 | 2 | 2026-11-16T17:02:20Z | 2026-11-16T17:09:52Z | 0.13 | Steps 4–7: auth probe re-run, hook proof, environment check, coding and rendering tools, harness commit, P3 (control), coding. Stopped at the $4.00 checkpoint to report. |
-| 3 | 2026-11-16T17:18:19Z | open | | Rulings read; evidence redaction and commit; build (step 8); pilot; pre-push gate. |
+| 3 | 2026-11-16T17:18:19Z | 2026-11-16T17:46:13Z | 0.47 | Rulings read; evidence redaction and commit; build (step 8); pilot; pilot and dogfood fixes; pre-push gate. Stopped to ask for the push. |
 
-Running total: 1.12 h of 16.
+Running total: 1.59 h of 16.
 
 ## Entry check (2026-11-16, before any Stage 1 work)
 

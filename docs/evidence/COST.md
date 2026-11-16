@@ -21,3 +21,7 @@ Gates:
 | 8 | 2026-11-16T17:08:37Z | p3-control | T3b | 0.049952 | 0.209361 | 2 |  |
 | 9 | 2026-11-16T17:08:51Z | p3-control | T4 | 0.070993 | 0.280354 | 3 |  |
 | 10 | 2026-11-16T17:09:00Z | p3-control | T5 | 0.082934 | 0.363288 | 3 |  |
+| 11 | 2026-11-16T17:38:04Z | pilot-1 | PILOT1 | 0.058911 | 0.422199 | 8 | UNREGISTERED pilot |
+| 12 | 2026-11-16T17:38:14Z | pilot-1 | PILOT1b | 0.081530 | 0.503729 | 3 | UNREGISTERED pilot |
+| 13 | 2026-11-16T17:38:20Z | pilot-1 | PILOT2 | 0.088083 | 0.591812 | 1 | UNREGISTERED pilot |
+| 14 | 2026-11-16T17:38:28Z | pilot-1 | PILOT3 | 0.097796 | 0.689608 | 2 | UNREGISTERED pilot |
