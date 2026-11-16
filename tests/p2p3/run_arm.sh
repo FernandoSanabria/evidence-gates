@@ -183,6 +183,14 @@ json.dump({"hooks": {"PreToolUse": [{"matcher": "Bash", "hooks": [{"type": "comm
     # A `claude plugin …` (or other non-session) command in the clean environment, in a profile that is created fresh
     # with the one-key settings.json when it does not exist yet. No session, no result event, no ledger row.
     profile=${3:?profile dir}; shift 3
+    # Guard (added 2026-11-16 after four unintended sessions): only `plugin <subcommand> …` or `--version` may pass.
+    # A single argument such as "plugin list" (an unsplit string) would be read by the binary as a prompt and start
+    # an unrecorded session in default permission mode.
+    case "${1:-}" in
+      plugin) [ -n "${2:-}" ] || die "cli mode: \`plugin\` needs a subcommand" ;;
+      --version) [ $# -eq 1 ] || die "cli mode: \`--version\` takes no other argument" ;;
+      *) die "cli mode runs only \`plugin <subcommand> …\` or \`--version\` (got: '${1:-}'); nothing run" ;;
+    esac
     [ -e "$RUN" ] || new_run
     [ -e "$profile" ] || new_profile "$profile"
     mkdir -p "$RUN/work"
