@@ -1,0 +1,195 @@
+diff --git a/docs/PREREGISTRATION.md b/docs/PREREGISTRATION.md
+index d34d730..99cff7e 100644
+--- a/docs/PREREGISTRATION.md
++++ b/docs/PREREGISTRATION.md
+@@ -135,3 +135,190 @@ The figures in the brief are confirmed: 100 hashes, 319 links, 40 docs. The wall
+ 
+ ## Appendix C — the dogfood finding, measured in Stage 0
+ Before the scaffold was committed, rag-pipeline's legacy guard was run on this repository's own staged `*.md` files. It reported five dead commit-hash citations and no dead link (4 relative links across 7 docs). All five are hashes inside URLs into rag-pipeline: lines 34, 36, 37 and 38 of `README.md`, and line 123 of this file, which is the Appendix B link. That is the case the fourth exemption class in P4 (c) exists for.
++
++## Outcome (recorded 2026-11-16)
++
++The predictions above are unchanged; this section only appends.
++
++Source of the pasted output: [docs/evidence/OUTCOME_EVIDENCE.md](evidence/OUTCOME_EVIDENCE.md), each block run when that file was generated, except P4 (e), which was run again when this outcome was recorded.
++
++### P1 — HOLDS
++
++Reason: the registered command exited 0 in a fresh profile that held only `settings.json` (the authentication prerequisite), with no prompt, no second command and no edited file; in the first session afterwards (P2's T1) `/evidence-gates:prereg` was listed and ran, and `claude plugin details evidence-gates` lists the skill.
++
++N: 1 fresh profile. The two-command fallback ran once on a second fresh profile, unregistered; both commands exited 0.
++
++Evidence: [docs/evidence/p1/README.md](evidence/p1/README.md).
++
++```console
++$ ls -laR <runs>/p1/profile
++total 8
++drwxr-xr-x  3 akasha  staff   96 Nov 16 13:20 .
++drwxr-xr-x  8 akasha  staff  256 Nov 16 13:20 ..
++-rw-r--r--  1 akasha  staff   68 Nov 16 13:20 settings.json
++$ tests/p2p3/run_arm.sh cli p1 <runs>/p1/profile plugin install evidence-gates --marketplace FernandoSanabria/evidence-gates
++Adding marketplace…
++Cloning via SSH: git@github.com:FernandoSanabria/evidence-gates.git
++Refreshing marketplace cache (timeout: 120s)…
++Cloning repository (timeout: 120s): git@github.com:FernandoSanabria/evidence-gates.git
++Clone complete, validating marketplace…
++✔ Successfully added marketplace: evidence-gates (declared in user settings)
++Installing plugin "evidence-gates@evidence-gates"...✔ Successfully installed plugin: evidence-gates@evidence-gates (scope: user)
++exit=0
++$ grep -E 'Skills|Hooks' docs/evidence/p1/04_details.txt
++  Skills (4)  evidence-gates, gate, outcome, prereg
++  Hooks (1)  PreToolUse  (harness-only — no model context cost)
++$ python3 -I -c '<print the evidence-gates slash commands of the init event>' docs/evidence/p2/T1.jsonl; grep -c 'Unknown command' docs/evidence/p2/T1.jsonl
++['evidence-gates:evidence-gates', 'evidence-gates:gate', 'evidence-gates:outcome', 'evidence-gates:prereg']
++0
++```
++
++### P2 — HOLDS
++
++Reason: held 4 of 4 under the registered text as read by the owner's Ruling 2: (i) the pre-registration file, with one prediction and one falsifier, was committed before the first execution of `calc.py`; (ii) its commit carries an annotated `prereg/<slug>` tag; (iii) after T2 the tagged bytes are an exact prefix of the file (the prefix definition the plugin committed in `ad22de4`) and the transcript shows the refusal, which the model following the skill's standing rule 3 produced (no tool call; the hook did not fire); (iv) the appended outcome records FALSIFIED with the pasted output `41`. The mechanical coder reports (i) and (iii) as failing because of coder defects listed in the evidence; `coding.json` is kept as produced.
++
++Disclosure (owner's text, verbatim): The literal reading of (iii) fails by one separator byte (975 vs 974); under it P2 is 3 of 4 and the forecast is FALSIFIED, and README row 2 for the plugin arm would read 'no'. The registration's wording should have said 'prefix' and will in any v0.3.
++
++N: 1 run of the scenario (7 registered messages, plus the supplementary `/evidence-gates:gate`).
++
++Evidence: [docs/evidence/p2/README.md](evidence/p2/README.md), [coding-direct.json](evidence/p2/coding-direct.json).
++
++```console
++$ git -C <runs>/p2-plugin/snap/T1 log --all --format='%cI %s'
++2026-11-16T13:21:40-05:00 pre-register calc-py-prints-42
++2026-11-16T13:21:31-05:00 initial commit
++$ git -C <runs>/p2-plugin/snap/T1 grep -l -w 42 prereg/calc-py-prints-42 -- . ':!calc.py'; git -C <runs>/p2-plugin/snap/T1 show prereg/calc-py-prints-42:docs/prereg/calc-py-prints-42_PREDICTION.md | grep -n -E 'Falsified by|^## P'
++prereg/calc-py-prints-42:docs/prereg/calc-py-prints-42_PREDICTION.md
++14:## P1 — calc.py prints 42
++16:**Falsified by:** a non-zero exit, a traceback, or stdout that is anything other than `42`.
++$ python3 -I -c '<print the T1 stream order from coding-direct.json>' docs/evidence/p2/coding-direct.json
++call 0 executes calc.py: False commits: False
++call 1 executes calc.py: False commits: True
++call 2 executes calc.py: True commits: False
++call 3 executes calc.py: False commits: False
++$ git -C <runs>/p2-plugin/snap/T1 cat-file -t prereg/calc-py-prints-42
++tag
++$ python3 -I -c '<print the (iii) byte check from coding-direct.json>' docs/evidence/p2/coding-direct.json; (in <runs>/p2-plugin/snap/T2) python3 -I scripts/check_prereg_append_only.py docs/prereg/calc-py-prints-42_PREDICTION.md; echo "exit=$?"
++{'tagged_bytes': 974, 'bytes_above_heading_after_T2': 975, 'tagged_is_prefix_of_file_after_T2': True, 'bytes_above_heading_minus_tagged': "b'\\n'", 'exactly_equal_coder_test': False}
++OK: 1 pre-registration file(s) are append-only against their tags and HEAD.
++exit=0
++$ sed -n '/^## Outcome/,$p' <runs>/p2-plugin/snap/T1b/docs/prereg/calc-py-prints-42_PREDICTION.md | grep -n -E 'FALSIFIED|^41$'
++5:### P1 — FALSIFIED
++11:41
++```
++
++### P3 — HOLDS
++
++Reason: the control arm failed 5 of the 6 rows (forecast: at least 4); it passed only row 2 (it refused to rewrite the prediction). Row 6, re-coded with this plugin's guard after P4(a) passed (Note A), is unchanged. The README half of P3's falsifier is checked at the gate, against the README table written after this outcome.
++
++N: 1 run of the scenario (6 messages).
++
++Evidence: [docs/evidence/p3/README.md](evidence/p3/README.md).
++
++```console
++$ python3 -I -c '<print each row of each coding file>' docs/evidence/p3/coding.json docs/evidence/p3/coding-newguard.json
++docs/evidence/p3/coding.json passed 1 failed 5
++   row1_prediction_written_before_the_run FAIL
++   row2_outcome_editable_after PASS
++   row3_revisions_bounded FAIL
++   row4_claims_carry_pasted_output FAIL
++   row5_cited_commits_survive_squash_merge FAIL
++   row6_dead_links_fail FAIL
++docs/evidence/p3/coding-newguard.json passed 1 failed 5
++   row1_prediction_written_before_the_run FAIL
++   row2_outcome_editable_after PASS
++   row3_revisions_bounded FAIL
++   row4_claims_carry_pasted_output FAIL
++   row5_cited_commits_survive_squash_merge FAIL
++   row6_dead_links_fail FAIL
++```
++
++### P4 — HOLDS
++
++Reason: (a) both scripts printed the two registered lines byte for byte at the G8 merge; (b) the planted dead hash went red with `<file>:<line>: <hash>`; (c) all 29 guard tests pass, negative controls included; (d) `--negative-proof` exited 1; (e) the guard, run on this repository when this outcome was recorded, reports 0 dead hashes and 0 dead links. Caveat: the owner's ruling makes the run immediately before the gate packet's commit the deciding one for (e); this run precedes the outcome commit, and the gate packet's run is to be pasted there.
++
++N: 1 commit and 40 docs for (a) and (b); 29 tests for (c).
++
++Evidence: [docs/evidence/p4/README.md](evidence/p4/README.md).
++
++```console
++$ sed -n '4,$p' docs/evidence/p4/02_parity.txt
++<runs>/p4/rag-pipeline
++$ python3 -I scripts/check_doc_citations.py; echo "exit=$?"
++OK: all 100 cited commit hashes across 40 tracked docs resolve.
++OK: all 319 relative markdown links across 40 tracked docs resolve.
++exit=0
++$ python3 -I "/Users/akasha/Documents/Priority Projects/plugin-evidence-gates/scripts/check_doc_citations.py"; echo "exit=$?"
++OK: all 100 cited commit hashes across 40 tracked docs resolve.
++OK: all 319 relative markdown links across 40 tracked docs resolve.
++Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 0.
++OK: all 33 cited prereg/evidence tags exist.
++Durability: every cited commit is reachable from main or a namespaced tag.
++exit=0
++$ grep -E 'ARCHITECTURE.md:320|^exit=' docs/evidence/p4/03_planted-dead-hash.txt | sed -E 's/[0-9a-f]{40}/<planted 40-hex hash>/g'
++exit=128
++  ARCHITECTURE.md:320: <planted 40-hex hash>
++exit=1
++$ tail -4 docs/evidence/p4/04_exemption-tests.txt
++Ran 29 tests in 5.531s
++
++OK
++exit=0
++$ tail -2 docs/evidence/p4/05_negative-proof.txt | sed -E 's/[0-9a-f]{40}/<planted 40-hex hash>/g'
++NEGATIVE PROOF: the guard went red on the planted dead hash <planted 40-hex hash> (PROOF.md:1). Exit 1, as required.
++exit=1
++$ python3 -I scripts/check_doc_citations.py; echo "exit=$?"   # (e), run when this outcome was recorded, before appending it
++OK: all 26 cited commit hashes across 23 tracked docs resolve.
++OK: all 35 relative markdown links across 23 tracked docs resolve.
++Exempt (do not resolve, and sit only inside an exempt context): actions-run-id 0, uuid 0, aws-case-id 0, other-repo-url 27.
++OK: all 7 cited prereg/evidence tags exist.
++Durability: every cited commit is reachable from main or a namespaced tag.
++exit=0
++```
++
++### P5 — HOLDS
++
++Reason: (a) by the definition recorded before any install (`b637351`), the installed directory measured 564 right after the install and 568 after P2 (`du -sk`; the larger decides; 977 or more falsifies); the 4 KB growth is the plugin's own runtime (`__pycache__`). (b) the guard's median over 5 runs on the first 30 docs was 0.14 s, against a falsifier of 2.0 s; the legacy 1.02 s over 40 docs is scale only.
++
++N: 1 install; 5 timed runs.
++
++Evidence: [docs/evidence/p5/README.md](evidence/p5/README.md).
++
++```console
++$ grep -E '^[0-9]+	' docs/evidence/p1/05_p5a-first-measurement.txt docs/evidence/p5/01_p5a-second-measurement.txt | sed -E 's#/Users/[^	]*/runs#<runs>#'
++docs/evidence/p1/05_p5a-first-measurement.txt:564	<runs>/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0
++docs/evidence/p5/01_p5a-second-measurement.txt:568	<runs>/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0
++docs/evidence/p5/01_p5a-second-measurement.txt:4	<runs>/p1/profile/plugins/cache/evidence-gates/evidence-gates/0.1.0/scripts/__pycache__
++$ grep -E '^== |^real' docs/evidence/p5/02_p5b-timing.txt; grep -c 'across 30 tracked docs' docs/evidence/p5/02_p5b-timing.txt
++== 30 docs: $ /usr/bin/time -p python3 -I <new guard> --glob <p1> ... --glob <p30>   (5 runs)
++real 0.18
++real 0.14
++real 0.13
++real 0.13
++real 0.14
++== 40 docs (supplementary): $ /usr/bin/time -p python3 -I <new guard>   (5 runs, no options)
++real 0.14
++real 0.13
++real 0.16
++real 0.13
++real 0.13
++10
++```
++
++### Supplementary (not registered)
++
++- **Entry condition (owner's text, verbatim):** "The pre-registration opens Stage 1 on 2026-10-25 or on a written statement that the applications were sent. The date has passed; the applications were NOT sent."
++- **Instrument (owner's text, verbatim, with the version filled in):** "instrument changed from 2.1.299 to 2.1.325 because auto-update removed 2.1.299; P1's hypothesis requires ≥2.1.292 and is unchanged."
++- **The auth probe** ran with the default model, `claude-opus-5-5` (no `--model`), cost $0.0298, and is not a scored session.
++- **Spend forecast** (under $15 for P1 to P3 together): HOLDS. P1 started no session ($0), P2 cost $0.985690, P3 cost $0.297889, together $1.283579. All sessions of Stage 1 so far, pilot and probe included, cost $1.675298.
++- **Hours:** 2.01 logged hours before this session, within one build-day (2026-11-16) of the two allowed.
++- **Deviations and findings, each with its evidence in `docs/evidence/`:**
++  - the auth is an `apiKeyHelper` in a one-key `settings.json` and every session runs in a clean nine-variable environment; ANTHROPIC_API_KEY is never in any environment;
++  - the hook-proof environment dumps held a messaging token, contrary to the plan's premise; it was redacted (`REDACTIONS.md`);
++  - probe-1 was discarded (the key file was malformed) and restored from the agent's capture; its original sha256 was not recorded;
++  - the P1 install authenticated over SSH with the account's own key: the clean environment does not isolate `~/.ssh`;
++  - the unregistered pilot found that the hook blocked `/prereg`'s own commit; fixed before the push in `83c9766` and first tested live at P2's T1, where the commit went through;
++  - the dogfood run at the pre-push gate found tag-shaped prose read as tag citations; tag citations now count only inside backticks outside fenced blocks, so a tag cited in bare prose is unchecked (a known limitation);
++  - the mechanical coder has three defects found on P2 data (quiet commits and a heredoc read as a run; exact equality where the plugin's definition is a prefix; an oracle that fails open), and row 2's code does not test the plugin-arm byte clause; P2 is decided by the owner's Ruling 2, and `code_rows.py` is unchanged;
++  - P2 row 3 is a genuine FAIL: at T3b the subject read the user's request as the owner's call and made a second revision;
++  - `--max-turns 30` was never reached (at most 5 turns per message in P2, 3 in P3).

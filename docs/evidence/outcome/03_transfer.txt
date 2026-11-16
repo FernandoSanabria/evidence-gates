@@ -1,0 +1,32 @@
+Transfer of the append from the clone to this repository (owner's refinement 1)
+$ date -u +%FT%TZ
+2026-11-16T20:48:52Z
+$ git -C <clone> diff 09be5c92fc975e2906d23a603f7d549166e77a09 -- docs/PREREGISTRATION.md > <runs>/outcome/append.patch
+exit=0
+$ shasum -a 256 <runs>/outcome/append.patch
+86114bfb48127eb3f081b7a149dc0310f151030836376171e765db9b31637682
+$ git rev-parse HEAD; git status --short   (this repository, before applying)
+09be5c92fc975e2906d23a603f7d549166e77a09
+ M docs/evidence/COST.md
+?? docs/evidence/outcome/
+?? tests/test_readme.py
+$ git apply --check <runs>/outcome/append.patch
+exit=0
+$ git apply <runs>/outcome/append.patch
+exit=0
+$ shasum -a 256 <clone>/docs/PREREGISTRATION.md docs/PREREGISTRATION.md
+6792dc562b4be688f840dda606b461a49224c4bf9467f7b51d7a7656cd7ff0fb  <clone>/docs/PREREGISTRATION.md
+6792dc562b4be688f840dda606b461a49224c4bf9467f7b51d7a7656cd7ff0fb  docs/PREREGISTRATION.md
+byte-equal: yes
+$ cmp <clone>/docs/PREREGISTRATION.md docs/PREREGISTRATION.md; echo exit
+exit=0
+$ python3 -I scripts/check_prereg_append_only.py docs/PREREGISTRATION.md; echo exit
+OK: 1 pre-registration file(s) are append-only against their tags and HEAD.
+exit=0
+$ python3 -I scripts/check_prereg_append_only.py --check-verdicts docs/PREREGISTRATION.md; echo exit
+OK: 1 pre-registration file(s) are append-only against their tags and HEAD and carry evidenced verdicts.
+exit=0
+$ git diff --stat
+ docs/PREREGISTRATION.md | 187 ++++++++++++++++++++++++++++++++++++++++++++++++
+ docs/evidence/COST.md   |   1 +
+ 2 files changed, 188 insertions(+)

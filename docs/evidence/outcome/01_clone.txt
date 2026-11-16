@@ -1,0 +1,15 @@
+$ date -u +%FT%TZ
+2026-11-16T20:47:26Z
+$ git clone -q "<this repository>" <runs>/outcome/repo
+exit=0
+$ git -C <runs>/outcome/repo remote remove origin   (harness safety: the subject gets no path back to this repository)
+exit=0
+$ git -C <runs>/outcome/repo rev-parse HEAD; git rev-parse HEAD   (clone and this repository)
+09be5c92fc975e2906d23a603f7d549166e77a09
+09be5c92fc975e2906d23a603f7d549166e77a09
+$ git -C <runs>/outcome/repo tag -l; git -C <runs>/outcome/repo status --short; git -C <runs>/outcome/repo remote -v
+prereg/v0.1
+prereg/v0.2
+(end)
+$ shasum -a 256 docs/PREREGISTRATION.md (clone, before the session)
+792f78fe64c108efc6f5b273ed0864ea31210397a711ca7a752fb26b3e8c44ce

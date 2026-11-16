@@ -1,0 +1,22 @@
+Checks in the clone after the /outcome session (owner's refinement 1)
+$ date -u +%FT%TZ
+2026-11-16T20:48:40Z
+$ git -C <clone> status --short
+ M docs/PREREGISTRATION.md
+$ git -C <clone> log --oneline 09be5c92fc975e2906d23a603f7d549166e77a09..HEAD   (commits made by the subject; empty = none)
+(end)
+$ git -C <clone> diff --stat 09be5c92fc975e2906d23a603f7d549166e77a09
+ docs/PREREGISTRATION.md | 187 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 187 insertions(+)
+$ git -C <clone> diff 09be5c92fc975e2906d23a603f7d549166e77a09 -- docs/PREREGISTRATION.md | grep -c '^-[^-]'   (removed lines; must be 0)
+0
+$ git -C <clone> stash list; git -C <clone> tag -l; git -C <clone> branch -a
+prereg/v0.1
+prereg/v0.2
+* main
+$ (in the clone) python3 -I scripts/check_prereg_append_only.py docs/PREREGISTRATION.md; echo exit
+OK: 1 pre-registration file(s) are append-only against their tags and HEAD.
+exit=0
+$ (in the clone) python3 -I scripts/check_prereg_append_only.py --check-verdicts docs/PREREGISTRATION.md; echo exit
+OK: 1 pre-registration file(s) are append-only against their tags and HEAD and carry evidenced verdicts.
+exit=0
