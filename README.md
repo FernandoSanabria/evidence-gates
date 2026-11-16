@@ -58,7 +58,10 @@ The transcripts and codings:
 
 - **Tags cited in bare prose are unchecked.** A tag citation counts only inside backticks and outside fenced blocks, so a tag written as plain prose goes unchecked. This keeps prose such as "evidence/prereg", or a repository name in pasted search output, from reading as a dead tag.
 - **Any 7–40 hex run in a tracked Markdown file is read as a commit citation, fenced or not.** This is kept for parity with rag-pipeline's guard. Pasted output that holds another repository's commit hashes therefore reads as dead in this one. Paste such output into a `.txt` file and link it.
-- **The installed directory grows after first use.** When the hook's checks first import their helper module, Python writes `scripts/__pycache__/` into it. At P5(a) the directory measured 564 KB right after the install and 568 KB after use.
+- **The install carries this repository's evidence.** The marketplace source is the whole repository (`./`), so `docs/evidence/` ships with every install.
+  - At P5(a), the install of the pushed build (before the Stage 1 evidence was added) measured 564 KB right after the install and 568 KB after use.
+  - An extracted archive of the release commit measures about 1,144 KB, 840 KB of it `docs/evidence/`.
+- **The installed directory grows after first use.** When the hook's checks first import their helper module, Python writes `scripts/__pycache__/` into it: 4 KB at P5(a).
 - **The hook sees only the commits Claude makes through its Bash tool.** Commits from your terminal, an IDE or CI are not checked. Run `scripts/check_doc_citations.py` there, with full history.
 - **Install transport.** The install cloned over SSH, with the account's own GitHub key. How it behaves on a machine with no GitHub SSH key was not tested.
 
