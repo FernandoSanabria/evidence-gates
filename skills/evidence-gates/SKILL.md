@@ -57,7 +57,7 @@ If the revision misses, it does not ship, and a second revision is not yours to 
 
 ## Tags and citations
 
-- **Tag names.** `prereg/<slug>` marks a pre-registration; `evidence/<slug>` marks a measured build.
+- **Tag names.** `prereg/<slug>` marks a pre-registration; `evidence/<slug>` marks a measured build. Cite a tag in backticks, as `prereg/<slug>`; the guard checks tags written that way.
 - **Cite commits that survive.** A commit hash cited in a doc must resolve from main or from one of those tags. A squash-merge or a deleted branch orphans every commit it does not keep, so tag what you cite before the squash, or cite the merged commit afterwards.
 - **No dead links.** Never commit a link to a file that does not exist.
 - **The commit hook.** It blocks dead hashes, dead links and dead tags. Fix the doc; never bypass the hook.

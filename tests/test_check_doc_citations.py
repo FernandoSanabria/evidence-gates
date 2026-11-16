@@ -149,15 +149,29 @@ class Guard(unittest.TestCase):
 
     def test_tag_citations(self):
         self.r.tag("prereg/calc")
-        self.doc("frozen as prereg/calc; evidence in docs/evidence/HOURS.md and docs/prereg/x_PREDICTION.md\n")
+        self.doc("frozen as `prereg/calc`; evidence in `docs/evidence/HOURS.md` and `docs/prereg/x_PREDICTION.md`\n")
         p = self.guard()
         self.assertEqual(p.returncode, 0, p.stdout)
         self.assertIn("OK: all 1 cited prereg/evidence tags exist.", p.stdout)
-        self.doc("see evidence/missing-build.\n")
+        self.doc("see `evidence/missing-build`.\n")
         p = self.guard()
         self.assertEqual(p.returncode, 1)
         self.assertIn("docs/note.md:1: evidence/missing-build", p.stdout)
         self.assertEqual(self.guard("--tag-ns", "").returncode, 0)
+
+    def test_tag_shapes_outside_code_spans_are_not_citations(self):
+        # The dogfood finding: prose "evidence/prereg" and the repository name prereg/prereg in a pasted search result.
+        self.doc("names containing evidence/prereg\n"
+                 "```console\n"
+                 "prereg/prereg\t1\t2023-04-26T09:11:47Z\n"
+                 "`prereg/in-a-fence`\n"
+                 "```\n"
+                 "after the fence: `git tag -a prereg/dead -m x`\n")
+        p = self.guard()
+        self.assertEqual(p.returncode, 1, p.stdout)
+        self.assertIn("docs/note.md:6: prereg/dead", p.stdout)
+        for absent in ("evidence/prereg", "prereg/prereg", "prereg/in-a-fence"):
+            self.assertNotIn(absent, p.stdout)
 
     def test_durability(self):
         self.r.git("checkout", "-q", "-b", "feat")

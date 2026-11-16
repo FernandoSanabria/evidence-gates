@@ -10,6 +10,9 @@ Usage (run from the repository, or pass --root):
   check_doc_citations.py [--glob G ...] [--tag-ns prereg,evidence] [--require-durable] [--self-url URL ...]
   check_doc_citations.py --negative-proof     plant a dead hash in a temporary repository; exit 1 = went red
   check_doc_citations.py --hook               PreToolUse mode: stdin JSON; on a `git commit`, exit 2 to block
+  In --hook mode a pre-registration's citation of its own tag (`prereg/<slug>` inside docs/prereg/<slug>_PREDICTION.md)
+  does not block: /prereg creates that tag right after the commit, so it cannot exist yet. A plain run (and /gate)
+  still reports it as dead until the tag exists.
 
 What it checks:
 - Commit hashes. Any run of 7-40 lowercase hex not flanked by [0-9A-Za-z_], on any line (fenced or not), counted once
@@ -21,8 +24,9 @@ What it checks:
   actions-run-id (digits after /actions/runs/ or /job/), uuid (RFC 4122 8-4-4-4-12, any case), aws-case-id (9+
   digits within 40 characters after the word "case"), other-repo-url (inside an http(s) URL whose host/owner/repo is
   not one of this repository's remotes or --self-url). A URL to this repository's own remote is still checked.
-- Tag citations (--tag-ns, default prereg,evidence; "" turns it off). A cited `prereg/<name>` or `evidence/<name>`
-  must exist as a tag. Paths such as docs/evidence/... do not count as citations.
+- Tag citations (--tag-ns, default prereg,evidence; "" turns it off). A `prereg/<name>` or `evidence/<name>` written
+  inside an inline code span (backticks), outside fenced blocks, is a citation and must exist as a tag. Prose such as
+  "evidence/prereg", a repository name such as prereg/prereg, and paths such as docs/evidence/... are not citations.
 - Durability. A cited commit should be reachable from main (refs/heads/main, else refs/remotes/origin/main) or from a
   tag in those namespaces; otherwise a squash-merge or a deleted branch can orphan it. Warning by default, a failure
   with --require-durable.
@@ -57,6 +61,14 @@ CASE_WORD = re.compile(r"(?i)\bcases?\b")
 LONG_DIGITS = re.compile(r"(?<!\d)\d{9,}(?!\d)")
 URL = re.compile(r"https?://[^\s)<>\]\"'`]+")
 TAG_CITE = re.compile(r"(?<![\w/.-])((?:%s)/[A-Za-z0-9._-]*[A-Za-z0-9_-])")
+CODE_SPAN = re.compile(r"(?<!`)(`+)(?!`)(.+?)(?<!`)\1(?!`)")
+OWN_PREREG = re.compile(r"(?:^|/)docs/prereg/([A-Za-z0-9._-]+)_PREDICTION\.md$")
+
+
+def own_tag(path: str, tag: str) -> bool:
+    """True when `tag` is the pre-registration tag of the file at `path` (prereg/<slug> for <slug>_PREDICTION.md)."""
+    m = OWN_PREREG.search(path.replace(os.sep, "/"))
+    return bool(m) and tag == "prereg/" + m.group(1)
 CLASSES = ("actions-run-id", "uuid", "aws-case-id", "other-repo-url")
 
 
@@ -191,12 +203,17 @@ def check(globs: list[str], include_untracked: bool, namespaces: list[str], self
     for f in files:
         text = open(f, encoding="utf-8").read()
         base = os.path.dirname(f)
+        in_fence = False
         for i, line in enumerate(text.splitlines(), 1):
             for sha in sorted(set(HASH.findall(line))):
                 entries.append((f, i, sha, line))
-            if tag_re:
-                for m in tag_re.finditer(line):
-                    tag_cites.append((f, i, m.group(1)))
+            if line.lstrip().startswith(("```", "~~~")):
+                in_fence = not in_fence
+                continue
+            if tag_re and not in_fence:
+                for span in CODE_SPAN.finditer(line):
+                    for m in tag_re.finditer(span.group(2)):
+                        tag_cites.append((f, i, m.group(1)))
         for i, target in iter_links(text):
             if not is_relative_target(target):
                 continue
@@ -322,7 +339,7 @@ def hook(namespaces: list[str]) -> int:
             os.chdir(here)
         bad = ([f"{f}:{i}: dead commit hash {s} (does not resolve)" for f, i, s in r["dead_hashes"]] +
                [f"{f}:{i}: dead relative link {t} (no such file)" for f, i, t in r["dead_links"]] +
-               [f"{f}:{i}: dead tag citation {t} (no such tag)" for f, i, t in r["dead_tags"]])
+               [f"{f}:{i}: dead tag citation {t} (no such tag)" for f, i, t in r["dead_tags"] if not own_tag(f, t)])
         if bad:
             blocked = True
             print("evidence-gates: commit blocked. The docs cite things that do not exist:", file=sys.stderr)

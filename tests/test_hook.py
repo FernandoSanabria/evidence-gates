@@ -91,10 +91,27 @@ class Wrapper(unittest.TestCase):
         self.assertIn("README.md:2: dead relative link docs/results.md", p.stderr)
 
     def test_dead_tag_blocks(self):
-        self.r.write("README.md", "start\nfrozen as prereg/nope\n")
+        self.r.write("README.md", "start\nfrozen as `prereg/nope`\n")
         p = run_wrapper(self.commit_payload())
         self.assertEqual(p.returncode, 2)
         self.assertIn("dead tag citation prereg/nope", p.stderr)
+
+    def test_new_prereg_citing_its_own_tag_commits(self):
+        # The pilot finding: /prereg's template names the file's own tag, which is created right after the commit.
+        self.r.write("docs/prereg/sq_PREDICTION.md", "# sq\nThis commit gets the annotated tag `prereg/sq`.\n")
+        p = run_wrapper(self.commit_payload())
+        self.assertEqual(p.returncode, 0, p.stderr)
+        plain = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "check_doc_citations.py"),
+                                "--include-untracked"], cwd=self.r.dir, capture_output=True, text=True, env=env())
+        self.assertEqual(plain.returncode, 1, plain.stdout)
+        self.assertIn("docs/prereg/sq_PREDICTION.md:2: prereg/sq", plain.stdout)
+
+    def test_prereg_citing_another_missing_tag_still_blocks(self):
+        self.r.write("docs/prereg/sq_PREDICTION.md", "# sq\nSee `prereg/cube`; this one is `prereg/sq`.\n")
+        p = run_wrapper(self.commit_payload())
+        self.assertEqual(p.returncode, 2)
+        self.assertIn("docs/prereg/sq_PREDICTION.md:2: dead tag citation prereg/cube", p.stderr)
+        self.assertNotIn("dead tag citation prereg/sq ", p.stderr)
 
     def test_untracked_new_doc_in_add_all_commit_blocks(self):
         self.r.write("notes/new.md", "[x](missing.md)\n")
